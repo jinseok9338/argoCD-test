@@ -1,62 +1,23 @@
-apiVersion: v1
-kind: Namespace
+apiVersion: argoproj.io/v1alpha1
+kind: Application
 metadata:
-  name: example
-spec: {}
----
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  namespace: example
-  name: example
+  name: myapp-argo-application
+  namespace: argocd
 spec:
-  selector:
-    matchLabels:
-      app.kubernetes.io/name: example
-  template:
-    metadata:
-      labels:
-        app.kubernetes.io/name: example
-    spec:
-      containers:
-        - image: 117371106642.dkr.ecr.ap-northeast-2.amazonaws.com/jinseok9338:latest
-          name: example
-          ports:
-            - containerPort: 8000
-              name: http
----
-apiVersion: v1
-kind: Service
-metadata:
-  namespace: example
-  name: example
-spec:
-  ports:
-    - name: http
-      port: 8000
-      targetPort: http
-      protocol: TCP
-  type: ClusterIP
-  selector:
-    app.kubernetes.io/name: example
----
-apiVersion: networking.k8s.io/v1
-kind: Ingress
-metadata:
-  namespace: example
-  name: example
-  annotations:
-    alb.ingress.kubernetes.io/scheme: internet-facing
-    alb.ingress.kubernetes.io/target-type: ip
-spec:
-  ingressClassName: alb
-  rules:
-    - http:
-        paths:
-          - path: /
-            pathType: Prefix
-            backend:
-              service:
-                name: example
-                port:
-                  name: http
+  project: default
+
+  source:
+    repoURL: https://github.com/jinseok9338/deploy-test.git
+    targetRevision: HEAD
+    path: dev
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: myapp
+
+  syncPolicy:
+    syncOptions:
+      - CreateNamespace=true
+
+    automated:
+      selfHeal: true
+      prune: true
