@@ -1,5 +1,6 @@
 provider "aws" {
   region = local.region
+
 }
 data "aws_caller_identity" "current" {}
 data "aws_availability_zones" "available" {}
@@ -194,13 +195,11 @@ module "eks" {
   version = "~> 19.13"
 
   cluster_name                   = local.name
+  
   cluster_version                = local.cluster_version
   cluster_endpoint_public_access = true
-
-
   vpc_id     = module.vpc.vpc_id
   subnet_ids = module.vpc.private_subnets
-
   eks_managed_node_groups = {
     initial = {
       instance_types = ["m5.large"]
@@ -259,3 +258,4 @@ module "vpc" {
 
   tags = local.tags
 }
+

@@ -19,10 +19,10 @@ spec:
         app.kubernetes.io/name: example
     spec:
       containers:
-        - image: us-central1-docker.pkg.dev/linux-practice-349511/cloud-run-source-deploy/livetermimal/livetermimal@sha256:6c10ec3d53d02cd1aef39eb20ef93ceacaeaacfb958b892d4273d8eb7c4148c8
+        - image: 117371106642.dkr.ecr.ap-northeast-2.amazonaws.com/jinseok9338:latest
           name: example
           ports:
-            - containerPort: 80
+            - containerPort: 8000
               name: http
 ---
 apiVersion: v1
@@ -33,7 +33,7 @@ metadata:
 spec:
   ports:
     - name: http
-      port: 80
+      port: 8000
       targetPort: http
       protocol: TCP
   type: ClusterIP
