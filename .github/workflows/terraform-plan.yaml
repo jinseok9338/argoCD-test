@@ -30,7 +30,7 @@ jobs:
     steps:
       # Checkout the repository to the GitHub Actions runner
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       # AWS 리소스를 이용하기 위해서 추가
       - name: Configure AWS credentials
